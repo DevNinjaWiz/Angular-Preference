@@ -1,0 +1,48 @@
+<div
+  class="timeline-stepper"
+  [class.timeline-stepper--horizontal]="displayLayout() === 'horizontal'"
+  [class.timeline-stepper--vertical]="displayLayout() === 'vertical'">
+  <div
+    class="timeline-stepper__header"
+    role="tablist"
+    [attr.aria-orientation]="displayLayout()">
+    @for (step of viewSteps(); track step.index; let i = $index) {
+      <button
+        type="button"
+        class="timeline-stepper__step"
+        [class.is-active]="step.active"
+        [class.is-completed]="step.completed"
+        [class.is-disabled]="step.disabled"
+        [id]="'timeline-stepper-step-' + i"
+        role="tab"
+        [attr.aria-selected]="step.active"
+        [attr.aria-controls]="'timeline-stepper-panel-' + i"
+        [attr.tabindex]="step.active ? 0 : -1"
+        [disabled]="step.disabled"
+        (click)="onSelectStep(i)">
+        <span
+          class="timeline-stepper__indicator"
+          [class.is-active]="step.active"
+          [class.is-completed]="step.completed">
+          {{ step.index + 1 }}
+        </span>
+
+        <span class="timeline-stepper__label">{{ step.label }}</span>
+      </button>
+
+      @if (i < totalSteps() - 1) {
+        <span
+          class="timeline-stepper__connector"
+          [class.is-completed]="step.completed"></span>
+      }
+    }
+  </div>
+
+  <section
+    class="timeline-stepper__panel"
+    [id]="'timeline-stepper-panel-' + currentStep()"
+    role="tabpanel"
+    [attr.aria-labelledby]="'timeline-stepper-step-' + currentStep()">
+    <ng-content select="tranglo1-shared-ui-timeline-step"></ng-content>
+  </section>
+</div>
